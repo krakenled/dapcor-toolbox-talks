@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>
+html{color-scheme:light dark}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>Loading Trucks at Site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F4F6F3; --surface:#FFFFFF; --surface-2:#EBEFE9; --sunk:#E3E8E1;
+  --ink:#171A16; --muted:#58625A; --line:#D6DDD4;
+  --green:#2E9B4E; --green-deep:#1F6E37; --green-wash:#E8F4EA;
+  --orange:#F5A02D; --amber-deep:#9E5E0B; --amber-wash:#FBF0DF;
+  --red:#C8202A; --red-wash:#FBEAEA; --brown:#6D5D52;
+  --shadow:0 1px 2px rgba(23,26,22,.06), 0 6px 18px rgba(23,26,22,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#12150F; --surface:#1A1E18; --surface-2:#222720; --sunk:#171B15;
+    --ink:#E9EDE6; --muted:#9AA69B; --line:#2E3529;
+    --green:#4FBE6F; --green-deep:#84D89A; --green-wash:#1C2C1F;
+    --orange:#F0AC4E; --amber-deep:#9A6516; --amber-wash:#2C2317;
+    --red:#F0616A; --red-wash:#2E1A1B; --brown:#A38F80;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.28);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12150F; --surface:#1A1E18; --surface-2:#222720; --sunk:#171B15;
+  --ink:#E9EDE6; --muted:#9AA69B; --line:#2E3529;
+  --green:#4FBE6F; --green-deep:#84D89A; --green-wash:#1C2C1F;
+  --orange:#F0AC4E; --amber-deep:#9A6516; --amber-wash:#2C2317;
+  --red:#F0616A; --red-wash:#2E1A1B; --brown:#A38F80;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.28);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans","Segoe UI",Arial,sans-serif;
+  font-size:16px; line-height:1.55; margin:0;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:760px; margin:0 auto; padding-inline:16px; padding-block:0 56px}
+
+/* ---------- masthead ---------- */
+.accent{display:flex; height:6px; gap:0}
+.accent span{flex:1}
+.accent i:nth-child(n){display:none}
+.a1{background:var(--green)} .a2{background:var(--orange)}
+.a3{background:var(--red)} .a4{background:var(--brown)}
+
+header.mast{padding-block:22px 18px; border-bottom:1px solid var(--line)}
+.brandline{
+  font-family:"Barlow Condensed",Arial,sans-serif; font-weight:600;
+  text-transform:uppercase; letter-spacing:.09em; font-size:14px;
+  color:var(--muted); margin:0 0 14px;
+}
+.brandline b{color:var(--ink); font-weight:700}
+.eyebrow{
+  font-family:"Barlow Condensed",Arial,sans-serif; font-weight:600;
+  text-transform:uppercase; letter-spacing:.14em; font-size:13px;
+  color:var(--green-deep); margin:0 0 2px;
+}
+h1{
+  font-family:"Barlow Condensed",Arial,sans-serif; font-weight:700;
+  font-size:clamp(34px,8vw,50px); line-height:1.02; letter-spacing:-.01em;
+  text-transform:uppercase; text-wrap:balance; margin:0 0 8px;
+}
+.forwho{font-size:17px; color:var(--muted); margin:0 0 16px; max-width:52ch}
+.meta{
+  display:flex; flex-wrap:wrap; gap:6px 18px; font-size:13.5px; color:var(--muted);
+  font-variant-numeric:tabular-nums;
+}
+.meta b{color:var(--ink); font-weight:600}
+
+/* ---------- lede ---------- */
+.lede{
+  background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--green);
+  border-radius:3px; padding:16px 18px; margin:22px 0 0; box-shadow:var(--shadow);
+}
+.lede p{margin:0 0 10px; max-width:62ch}
+.lede p:last-child{margin-bottom:0}
+
+/* ---------- topics ---------- */
+section.topic{margin-top:38px}
+.thead{display:flex; align-items:baseline; gap:12px; border-bottom:2px solid var(--green); padding-bottom:7px}
+.tnum{
+  font-family:"Barlow Condensed",Arial,sans-serif; font-weight:700; font-size:14px;
+  letter-spacing:.1em; color:var(--green-deep); text-transform:uppercase;
+  white-space:nowrap; padding-top:3px;
+}
+h2{
+  font-family:"Barlow Condensed",Arial,sans-serif; font-weight:700;
+  font-size:clamp(23px,4.6vw,30px); line-height:1.1; text-transform:uppercase;
+  letter-spacing:.005em; margin:0; text-wrap:balance;
+}
+.intro{font-size:16.5px; color:var(--muted); margin:12px 0 4px; max-width:62ch}
+.intro strong{color:var(--ink); font-weight:600}
+
+ul.rules{list-style:none; margin:16px 0 0; padding:0; display:grid; gap:2px}
+ul.rules li{
+  background:var(--surface); border-left:3px solid var(--line);
+  padding:11px 14px; max-width:64ch;
+}
+ul.rules li strong{font-weight:600}
+ul.rules.do li{border-left-color:var(--green)}
+ul.rules.dont li{border-left-color:var(--red)}
+
+h3{
+  font-family:"Barlow Condensed",Arial,sans-serif; font-weight:600; font-size:19px;
+  text-transform:uppercase; letter-spacing:.05em; margin:26px 0 0; color:var(--ink);
+}
+
+/* ---------- stillage diagram ---------- */
+.figs{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px}
+@media (max-width:560px){ .figs{grid-template-columns:1fr} }
+figure{
+  margin:0; background:var(--surface); border:1px solid var(--line);
+  border-radius:3px; padding:12px; box-shadow:var(--shadow);
+}
+figure svg{display:block; width:100%; height:auto; max-width:100%}
+figcaption{margin-top:10px; font-size:14px; line-height:1.45; color:var(--muted)}
+.tag{
+  display:inline-block; font-family:"Barlow Condensed",Arial,sans-serif; font-weight:700;
+  text-transform:uppercase; letter-spacing:.09em; font-size:13px;
+  padding:2px 8px; border-radius:2px; margin-bottom:9px;
+}
+.tag.ok{background:var(--green-wash); color:var(--green-deep)}
+.tag.no{background:var(--red-wash); color:var(--red)}
+
+.dims{
+  display:flex; flex-wrap:wrap; gap:0; margin-top:18px;
+  border:1px solid var(--line); border-radius:3px; overflow:hidden; background:var(--surface);
+}
+.dims div{flex:1 1 150px; padding:12px 14px; border-right:1px solid var(--line)}
+.dims div:last-child{border-right:0}
+.dims dt{
+  font-family:"Barlow Condensed",Arial,sans-serif; text-transform:uppercase;
+  letter-spacing:.1em; font-size:12.5px; color:var(--muted); margin:0 0 2px;
+}
+.dims dd{
+  margin:0; font-size:22px; font-weight:600; font-variant-numeric:tabular-nums;
+  font-family:"Barlow Condensed",Arial,sans-serif; letter-spacing:.01em;
+}
+.dims dd small{font-size:14px; color:var(--muted); font-weight:500}
+
+/* ---------- metals split ---------- */
+.split{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px}
+@media (max-width:560px){ .split{grid-template-columns:1fr} }
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:3px; overflow:hidden; box-shadow:var(--shadow)}
+.panel .head{
+  font-family:"Barlow Condensed",Arial,sans-serif; font-weight:700; text-transform:uppercase;
+  letter-spacing:.07em; font-size:16px; padding:9px 14px; color:#fff;
+  margin:0; display:flex; align-items:center; min-height:68px;
+}
+.panel.yes .head{background:var(--green-deep)}
+.panel.dep .head{background:var(--amber-deep)}
+.panel ul{list-style:none; margin:0; padding:10px 14px 14px}
+.panel li{padding:5px 0 5px 22px; position:relative; font-size:15.5px; border-bottom:1px solid var(--line)}
+.panel li:last-child{border-bottom:0}
+.panel li::before{position:absolute; left:0; top:5px; font-weight:600}
+.panel.yes li::before{content:"\2192"; color:var(--green-deep)}
+.panel.dep li::before{content:"\2013"; color:var(--amber-deep)}
+.panel .foot{padding:0 14px 13px; font-size:14px; color:var(--muted)}
+
+/* ---------- callout ---------- */
+.callout{
+  margin-top:26px; background:var(--surface-2); border:1px solid var(--line);
+  border-radius:3px; padding:15px 17px;
+}
+.callout .lbl{
+  font-family:"Barlow Condensed",Arial,sans-serif; font-weight:700; text-transform:uppercase;
+  letter-spacing:.1em; font-size:13px; color:var(--orange); margin:0 0 5px;
+}
+.callout p{margin:0; max-width:62ch}
+.callout q{font-style:italic}
+
+/* ---------- acknowledgement ---------- */
+.ack{
+  margin-top:44px; background:var(--surface); border:2px solid var(--green);
+  border-radius:4px; padding:20px 18px; box-shadow:var(--shadow);
+}
+.ack h2{margin-bottom:6px}
+.ack .say{font-size:15.5px; color:var(--muted); margin:0 0 16px; max-width:58ch}
+.field{display:grid; gap:5px; margin-bottom:13px}
+.field label{
+  font-family:"Barlow Condensed",Arial,sans-serif; text-transform:uppercase;
+  letter-spacing:.1em; font-size:13px; color:var(--muted);
+}
+.field input[type=text]{
+  font:inherit; font-size:16px; color:var(--ink); background:var(--sunk);
+  border:1px solid var(--line); border-radius:3px; padding:11px 12px; width:100%;
+}
+.field input[type=text]:focus-visible{outline:2px solid var(--green); outline-offset:1px; border-color:var(--green)}
+.confirm{display:flex; gap:11px; align-items:flex-start; margin:16px 0; font-size:15.5px; max-width:58ch}
+.confirm input{width:22px; height:22px; margin:1px 0 0; accent-color:var(--green); flex:none}
+button{
+  font-family:"Barlow Condensed",Arial,sans-serif; font-weight:700; text-transform:uppercase;
+  letter-spacing:.08em; font-size:18px; color:#fff; background:var(--green-deep);
+  border:0; border-radius:3px; padding:13px 26px; cursor:pointer; width:100%;
+}
+button:hover:not(:disabled){background:var(--green)}
+button:disabled{opacity:.45; cursor:not-allowed}
+button:focus-visible{outline:2px solid var(--ink); outline-offset:2px}
+.status{margin:12px 0 0; font-size:14.5px; color:var(--muted)}
+.status.bad{color:var(--red)}
+.done{
+  display:flex; gap:12px; align-items:flex-start;
+  background:var(--green-wash); border-radius:3px; padding:15px 16px;
+}
+.done .tick{color:var(--green-deep); font-size:26px; line-height:1; font-weight:700}
+.done p{margin:0; font-size:15.5px}
+.done b{font-weight:600}
+.done .when{display:block; color:var(--muted); font-size:14px; margin-top:3px; font-variant-numeric:tabular-nums}
+
+/* ---------- roster (editors) ---------- */
+.roster{margin-top:22px; border-top:1px solid var(--line); padding-top:16px}
+.roster h3{margin-top:0}
+.roster .count{font-size:14px; color:var(--muted); margin:4px 0 10px; font-variant-numeric:tabular-nums}
+table{width:100%; border-collapse:collapse; font-size:14.5px}
+th{
+  text-align:left; font-family:"Barlow Condensed",Arial,sans-serif; text-transform:uppercase;
+  letter-spacing:.08em; font-size:12.5px; color:var(--muted); font-weight:600;
+  border-bottom:1px solid var(--line); padding:6px 8px 6px 0;
+}
+td{padding:7px 8px 7px 0; border-bottom:1px solid var(--line); vertical-align:top}
+td.when{color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto}
+
+/* ---------- record ---------- */
+.record{margin-top:44px; border-top:1px solid var(--line); padding-top:20px}
+.record h3{margin-top:0; margin-bottom:10px}
+.record .rows{display:grid; gap:10px; max-width:62ch}
+.record .row{display:flex; flex-wrap:wrap; gap:4px 10px; font-size:15px; align-items:baseline}
+.record .who{
+  font-family:"Barlow Condensed",Arial,sans-serif; text-transform:uppercase;
+  letter-spacing:.09em; font-size:13px; color:var(--muted); min-width:88px;
+}
+.record .row b{font-weight:600}
+.record .pos{color:var(--muted); font-size:14px}
+footer{margin-top:26px; font-size:13.5px; color:var(--muted); line-height:1.6}
+footer a{color:var(--green-deep)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="accent"><span class="a1"></span><span class="a2"></span><span class="a3"></span><span class="a4"></span></div>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="brandline"><b>Dapcor Building Services</b> &nbsp;·&nbsp; 16 Booralee Street, Botany NSW 2019 &nbsp;·&nbsp; 02 9316 7866</p>
+  <p class="eyebrow">Toolbox Talk</p>
+  <h1>Loading trucks and getting your site ready</h1>
+  <p class="forwho">For foremen, leading hands, labourers, project managers, assistant project managers and contract admin. What has to be done before the truck turns up, and how doors, windows and metals come back to the yard.</p>
+  <div class="meta">
+    <span>Version <b>1.2</b></span>
+    <span>Updated <b>30 September 2026</b></span>
+    <span>Read time <b>4 min</b></span>
+  </div>
+</header>
+
+<div class="lede">
+  <p>Every minute a truck waits on site for material to be carried over and bagged is a minute it isn't on the next job. The load needs to be sitting ready in bulka bags, stillages or on pallets before the truck arrives. Crane on, crane off, gone.</p>
+  <p>This talk covers three things: getting your material ready for the booking, how aluminium doors and windows go in the stillages, and which metals come back to the yard and which never go on a Dapcor truck.</p>
+</div>
+
+<section class="topic">
+  <div class="thead"><span class="tnum">Topic 1</span><h2>Have the load ready before the truck arrives</h2></div>
+  <p class="intro">The booking is for <strong>lifting and leaving</strong>, not for collecting and packing. When the truck arrives the load should already be made up and sitting where the crane can reach it.</p>
+  <ul class="rules do">
+    <li>Make sure all rubbish is in a <strong>bulka bag, stillage or on a pallet</strong> before the truck arrives, not during the booking.</li>
+    <li>Nothing is carried in from another part of the site once the truck is on the ground. If it isn't bagged by then, it goes on the next booking.</li>
+    <li>Bags and pallets are made up where the crane can reach them, with clear access for the truck to set up.</li>
+    <li>Bags aren't overfilled and their lifting loops are intact and clear. Nothing sticking out the top that can catch on the way up.</li>
+    <li>The lift zone stays clear while the crane is working, and nobody stands under a load.</li>
+  </ul>
+  <div class="callout">
+    <p class="lbl">What the drivers have already been told</p>
+    <p>Drivers have had their own toolbox talk on this. They supervise the load, they don't do the manual loading, and they have been told plainly: <q>Nothing loose is to be loaded. No loose material is to be delivered to the yard.</q> A driver who stops loose material going on the truck is doing exactly what we have asked of them. Back them up.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <div class="thead"><span class="tnum">Topic 2</span><h2>Aluminium doors and windows</h2></div>
+  <p class="intro">The stillages were bought for one job only: moving and storing doors and windows. They are not general rubbish cages. Units go in <strong>flat, stacked in layers, every one running the same way as the cross bars</strong> on the base. Doors run over 2000&nbsp;mm long and 1250&nbsp;mm wide against a stillage 1350 × 1070 internally, so they overhang the frame. That's normal and expected. What matters is that they all overhang the <em>same</em> way.</p>
+
+  <div class="figs">
+    <figure>
+      <span class="tag ok">Right</span>
+      <svg viewBox="0 0 300 250" role="img" aria-label="Face-on view of a loaded stillage: door and window units lying flat in even layers, all running the same way, overhanging evenly past both posts and staying below the top of the posts.">
+        <g fill="var(--green-wash)" stroke="var(--green-deep)" stroke-width="2">
+          <rect x="26" y="172" width="248" height="15" rx="1.5"/>
+          <rect x="26" y="154" width="248" height="15" rx="1.5"/>
+          <rect x="26" y="136" width="248" height="15" rx="1.5"/>
+          <rect x="26" y="118" width="248" height="15" rx="1.5"/>
+          <rect x="26" y="100" width="248" height="15" rx="1.5"/>
+          <rect x="26" y="82" width="248" height="15" rx="1.5"/>
+        </g>
+        <g fill="var(--ink)">
+          <rect x="80" y="54" width="9" height="133"/>
+          <rect x="211" y="54" width="9" height="133"/>
+          <rect x="80" y="187" width="140" height="9"/>
+        </g>
+        <g fill="var(--ink)">
+          <path d="M74 196 h21 l-4 10 h-13 z"/>
+          <path d="M205 196 h21 l-4 10 h-13 z"/>
+        </g>
+        <g fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 3">
+          <path d="M74 54 h21 l-4 -10 h-13 z"/>
+          <path d="M205 54 h21 l-4 -10 h-13 z"/>
+        </g>
+        <g stroke="var(--green-deep)" stroke-width="1.5" fill="none">
+          <line x1="120" y1="55" x2="120" y2="81"/>
+          <path d="M116 60 L120 55 L124 60"/>
+          <path d="M116 76 L120 81 L124 76"/>
+          <line x1="112" y1="55" x2="128" y2="55" stroke-dasharray="3 2"/>
+        </g>
+        <g fill="var(--muted)" font-family="Barlow Condensed, Arial, sans-serif" font-size="13" letter-spacing="1">
+          <text x="150" y="36" text-anchor="middle">NEXT STILLAGE SEATS HERE</text>
+          <text x="134" y="73" fill="var(--green-deep)">50mm MIN</text>
+          <text x="53" y="232" text-anchor="middle">OVERHANG</text>
+          <text x="247" y="232" text-anchor="middle">OVERHANG</text>
+          <text x="150" y="232" text-anchor="middle" fill="var(--green-deep)">FLAT, ONE WAY</text>
+        </g>
+        <g stroke="var(--muted)" stroke-width="1.5">
+          <line x1="26" y1="214" x2="80" y2="214"/>
+          <line x1="26" y1="210" x2="26" y2="218"/><line x1="80" y1="210" x2="80" y2="218"/>
+          <line x1="220" y1="214" x2="274" y2="214"/>
+          <line x1="220" y1="210" x2="220" y2="218"/><line x1="274" y1="210" x2="274" y2="218"/>
+        </g>
+      </svg>
+      <figcaption>Flat, in even layers, all running the one way and overhanging evenly at both ends. The top layer finishes at least 50&nbsp;mm below the top of the stillage. They're stacked up to five high at the yard.</figcaption>
+    </figure>
+
+    <figure>
+      <span class="tag no">Wrong</span>
+      <svg viewBox="0 0 300 250" role="img" aria-label="Face-on view of a badly loaded stillage: a unit standing on edge, units crossed over each other at an angle, and a unit sitting proud above the posts with all the overhang at one end.">
+        <g fill="var(--red-wash)" stroke="var(--red)" stroke-width="2">
+          <rect x="26" y="172" width="248" height="15" rx="1.5"/>
+          <rect x="40" y="146" width="230" height="15" rx="1.5" transform="rotate(-7 155 153)"/>
+          <rect x="118" y="74" width="14" height="72" rx="1.5"/>
+        </g>
+        <g fill="var(--ink)">
+          <rect x="80" y="54" width="9" height="133"/>
+          <rect x="211" y="54" width="9" height="133"/>
+          <rect x="80" y="187" width="140" height="9"/>
+        </g>
+        <g fill="var(--ink)">
+          <path d="M74 196 h21 l-4 10 h-13 z"/>
+          <path d="M205 196 h21 l-4 10 h-13 z"/>
+        </g>
+        <rect x="96" y="34" width="196" height="15" rx="1.5" fill="var(--red-wash)" stroke="var(--red)" stroke-width="2"/>
+        <g stroke="var(--red)" stroke-width="2.5" fill="none" stroke-linecap="round">
+          <path d="M121 92 L114 106 L130 114 L120 130"/>
+        </g>
+        <g fill="var(--red)" font-family="Barlow Condensed, Arial, sans-serif" font-size="13" letter-spacing="1">
+          <text x="150" y="232" text-anchor="middle">ON EDGE · CROSSED · PROUD</text>
+        </g>
+      </svg>
+      <figcaption>Three ways it goes wrong: a unit stood on edge, units crossed over each other, and a unit sitting proud of the posts with all its overhang at one end. Each one breaks glass, and none of it can be stacked on.</figcaption>
+    </figure>
+  </div>
+
+  <figure style="margin-top:14px; max-width:400px">
+    <svg viewBox="0 0 300 172" role="img" aria-label="Plan view of the stillage base showing the cross bars, with a double-headed arrow running the same way as the bars.">
+      <rect x="40" y="18" width="220" height="118" fill="var(--sunk)"/>
+      <g stroke="var(--muted)" stroke-width="7" stroke-linecap="butt">
+        <line x1="113" y1="18" x2="113" y2="136"/>
+        <line x1="187" y1="18" x2="187" y2="136"/>
+      </g>
+      <rect x="40" y="18" width="220" height="118" fill="none" stroke="var(--ink)" stroke-width="5"/>
+      <g fill="var(--ink)">
+        <rect x="34" y="12" width="12" height="12"/><rect x="254" y="12" width="12" height="12"/>
+        <rect x="34" y="130" width="12" height="12"/><rect x="254" y="130" width="12" height="12"/>
+      </g>
+      <g stroke="var(--green-deep)" stroke-width="2.5" fill="none" stroke-linecap="round">
+        <line x1="150" y1="34" x2="150" y2="120"/>
+        <path d="M143 41 L150 32 L157 41"/>
+        <path d="M143 113 L150 122 L157 113"/>
+      </g>
+      <g fill="var(--muted)" font-family="Barlow Condensed, Arial, sans-serif" font-size="14" letter-spacing="1">
+        <text x="76" y="80" text-anchor="middle">CROSS</text>
+        <text x="76" y="96" text-anchor="middle">BARS</text>
+        <text x="150" y="162" text-anchor="middle" fill="var(--green-deep)">STACK THIS WAY, WITH THE BARS</text>
+      </g>
+    </svg>
+    <figcaption>The base has two cross bars running through it. Line your material up with them. Look at the stillage you're loading and match it. Every unit in the stillage runs that same way.</figcaption>
+  </figure>
+
+  <dl class="dims">
+    <div><dt>Stillage internal</dt><dd>1350 × 1070 <small>mm</small></dd></div>
+    <div><dt>Doors up to</dt><dd>2000+ × 1250 <small>mm</small></dd></div>
+    <div><dt>Overhang</dt><dd>Normal <small>· keep it even</small></dd></div>
+    <div><dt>Top clearance</dt><dd>50 <small>mm min</small></dd></div>
+  </dl>
+
+  <ul class="rules do">
+    <li>Stillages are for doors and windows. Don't fill them with general rubbish or offcuts.</li>
+    <li>Stack flat and all in one direction, the same direction as the cross bars on the base.</li>
+    <li>Overhang is expected, since the units are bigger than the frame. Keep it <strong>even at both ends</strong> and the same on every layer, so the stack sits square.</li>
+    <li>The top layer finishes <strong>at least 50&nbsp;mm below the top of the stillage</strong>. They're stacked <strong>up to five high</strong> at the yard, each one's feet seated on the posts below. Load one proud and the stack stops there.</li>
+    <li>Nothing stood on edge, and no units crossed over each other at an angle.</li>
+    <li>The same rule applies to how they're stacked at the yard, so the stillage can be lifted by forklift at either end of the trip.</li>
+  </ul>
+  <p class="intro">At the yard the units are disassembled and the material goes to the recyclers. Anything broken or packed wrong costs us that, and the glass ends up on the ground.</p>
+</section>
+
+<section class="topic">
+  <div class="thead"><span class="tnum">Topic 3</span><h2>Metals: what comes back and what doesn't</h2></div>
+  <p class="intro">Two different rules here, so don't mix them up. The valuable metals come back <strong>no matter how small the offcut</strong>. A 200&nbsp;mm length of copper pipe goes back the same as a full coil. Steel is judged on <strong>quantity</strong>: a small amount can come back on a booking, a large amount gets a scrap merchant to site.</p>
+
+  <div class="split">
+    <div class="panel yes">
+      <p class="head">Back to the yard: any size, any weight</p>
+      <ul>
+        <li>Copper piping</li>
+        <li>Brass</li>
+        <li>Stainless steel</li>
+        <li>Lead</li>
+      </ul>
+      <p class="foot">Every offcut. Don't leave it in a bin or in a mixed bag. It's worth returning and it's worth stealing.</p>
+    </div>
+    <div class="panel dep">
+      <p class="head">Steel: depends on the quantity</p>
+      <ul>
+        <li>Roof sheeting</li>
+        <li>Colorbond</li>
+        <li>Steel fencing</li>
+        <li>Handrail</li>
+      </ul>
+      <p class="foot">The any-size rule doesn't apply to these. A <strong>small amount</strong> can come back to the yard on a normal booking. A <strong>large amount</strong> is collected from site by a scrap merchant, not moved with Dapcor logistics.</p>
+    </div>
+  </div>
+
+  <ul class="rules dont">
+    <li>Don't fill a booking with a large amount of steel. That's a job for a scrap merchant collecting from site. Arrange it rather than tying up a truck and a crane.</li>
+    <li>Don't mix the valuable metals in with general rubbish. Separate them on site, before the booking, while you can still see what's what.</li>
+    <li>Not sure whether yours counts as a small amount or a large one? <strong>Ring Ben before the booking</strong> rather than guessing at it on the day.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <div class="thead"><span class="tnum">Topic 4</span><h2>When the truck is on site</h2></div>
+  <ul class="rules do">
+    <li>The driver supervises the load and operates the crane. The driver does not do the manual loading.</li>
+    <li>If a driver refuses loose material, that's the instruction they've been given. Don't argue it on site. Bag it and put it on the next booking.</li>
+    <li>Anything loose left on a truck has to come off before it leaves site.</li>
+    <li>Problems with a booking go to <strong>Ben Lawrence</strong>, Yard Manager, not to the driver.</li>
+  </ul>
+</section>
+
+<section class="ack" id="ack">
+  <div class="thead"><span class="tnum">Sign off</span><h2>Read and understood</h2></div>
+  <p class="say" style="margin-top:14px">Put your name and your site in, tick the box and submit. That's your record of attending this talk.</p>
+
+  <div id="ack-form">
+    <div class="field">
+      <label for="ack-name">Your name</label>
+      <input type="text" id="ack-name" autocomplete="name" spellcheck="false">
+    </div>
+    <div class="field">
+      <label for="ack-site">Site</label>
+      <input type="text" id="ack-site" autocomplete="off" spellcheck="false" placeholder="e.g. Arden St, Coogee">
+    </div>
+    <label class="confirm" for="ack-tick">
+      <input type="checkbox" id="ack-tick">
+      <span>I have read this toolbox talk, I understand what it covers, and I know who to ask if I'm unsure.</span>
+    </label>
+    <button type="button" id="ack-submit" disabled>Submit my sign-off</button>
+    <p class="status" id="ack-status"></p>
+  </div>
+
+  <div class="done" id="ack-done" hidden>
+    <span class="tick" aria-hidden="true">✓</span>
+    <p><b id="done-name">Recorded</b>, your sign-off for this talk has been saved.
+      <span class="when" id="done-when"></span></p>
+  </div>
+
+  <div class="roster" id="roster" hidden>
+    <h3>Sign-offs received</h3>
+    <p class="count" id="roster-count">0</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Name</th><th>Site</th><th>When</th></tr></thead>
+        <tbody id="roster-rows"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="record">
+  <h3>Record</h3>
+  <div class="rows">
+    <div class="row"><span class="who">Drafted by</span><b>Mitch Reilly</b><span class="pos">Project Manager</span></div>
+    <div class="row"><span class="who">Issued by</span><b>Ben Lawrence</b><span class="pos">Yard Manager</span></div>
+  </div>
+  <footer>
+    Toolbox talk for site and project staff: loading trucks and site preparation. Version 1.2, last changed 30 September 2026.<br>
+    Questions about a booking, an oversize unit or a scrap collection: Ben Lawrence, Yard Manager, <a href="tel:0293167866">02 9316 7866</a>.
+  </footer>
+</section>
+
+</div>
+
+
+
+<script>
+(function () {
+  "use strict";
+
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbzzr2wR5YRUlTzOWcQEY9-g7zI2GJLSpYqmn9Xhvx9ktQKqpXqqUKRQMMHTWwplpeWw/exec";
+  var KEY      = "dapcor-tbt-2026";
+  var TALK     = "supervisors-truck-loading";
+  var VERSION  = "1.2";
+
+  var nameEl   = document.getElementById("ack-name");
+  var siteEl   = document.getElementById("ack-site");
+  var tickEl   = document.getElementById("ack-tick");
+  var btnEl    = document.getElementById("ack-submit");
+  var statusEl = document.getElementById("ack-status");
+  var formEl   = document.getElementById("ack-form");
+  var doneEl   = document.getElementById("ack-done");
+
+  // Per-device only, so reopening the talk shows the sign-off already made.
+  // The register itself is the Sheet; this is a convenience, not the record.
+  var storeKey = "dapcor-tbt-" + TALK + "-" + VERSION;
+
+  function setStatus(text, bad) {
+    statusEl.textContent = text || "";
+    statusEl.classList.toggle("bad", !!bad);
+  }
+
+  function refreshButton() {
+    btnEl.disabled = !(tickEl.checked &&
+      nameEl.value.trim().length > 1 && siteEl.value.trim().length > 0);
+  }
+
+  [nameEl, siteEl].forEach(function (el) { el.addEventListener("input", refreshButton); });
+  tickEl.addEventListener("change", refreshButton);
+
+  function fmt(iso) {
+    if (!iso) { return ""; }
+    var d = new Date(iso);
+    if (isNaN(d)) { return ""; }
+    return d.toLocaleString("en-AU", {
+      day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit"
+    });
+  }
+
+  function showDone(rec) {
+    document.getElementById("done-name").textContent =
+      (rec && rec.name ? rec.name : "Recorded") + (rec && rec.site ? " Â· " + rec.site : "");
+    document.getElementById("done-when").textContent =
+      rec && rec.at ? "Signed off " + fmt(rec.at) : "";
+    formEl.hidden = true;
+    doneEl.hidden = false;
+  }
+
+  try {
+    var saved = window.localStorage.getItem(storeKey);
+    if (saved) { showDone(JSON.parse(saved)); }
+  } catch (e) { /* private window or storage blocked: just show the form */ }
+
+  btnEl.addEventListener("click", function () {
+    btnEl.disabled = true;
+    setStatus("Saving...");
+
+    var rec = {
+      key: KEY,
+      name: nameEl.value.trim(),
+      site: siteEl.value.trim(),
+      talk: TALK,
+      version: VERSION
+    };
+
+    // text/plain keeps this a simple request. application/json would trigger a
+    // CORS preflight, which Apps Script web apps do not answer.
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(rec)
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.ok) {
+          rec.at = d.at || new Date().toISOString();
+          try { window.localStorage.setItem(storeKey, JSON.stringify(rec)); } catch (e) {}
+          setStatus("");
+          showDone(rec);
+        } else {
+          setStatus("That didn't save. " + ((d && d.error) || "Try again."), true);
+          refreshButton();
+        }
+      })
+      .catch(function () {
+        // Signing again is safe: the register updates the row rather than
+        // adding a second one for the same person and version.
+        setStatus("Couldn't reach the register. Check your signal and try again.", true);
+        refreshButton();
+      });
+  });
+})();
+</script>
+</body>
+</html>
